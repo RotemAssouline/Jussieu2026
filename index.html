@@ -91,22 +91,80 @@
     transition: width 800ms cubic-bezier(0.260, 0.860, 0.440, 0.985);
   }
   .reveal .slide-number {
+    display: none; /* Hide default slide number */
+  }
+
+  /* Table of Contents Navigation */
+  #toc-nav {
+    position: fixed;
+    top: 1vh;
+    left: 1vw;
     font-family: 'Alegreya Sans', sans-serif;
-    font-size: 0.85em;
-    color: rgba(108, 147, 158, 0.85);
-    background-color: rgba(255, 255, 255, 0);
-    padding: 6px 12px;
-    border: none;
-    /* Move to top-right to avoid navigation controls */
-    top: 12px;
-    bottom: auto;
-    right: 12px;
+    font-size: 1.1vw;
+    line-height: 1.4;
+    color: rgba(108, 147, 158, 0.7);
+    text-align: left;
+    z-index: 1000;
+    max-width: 15vw;
+    transition: opacity 0.3s;
+  }
+  #toc-nav.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* Laptop screens: use fixed pixel size for better readability */
+  @media (max-width: 1400px) {
+    #toc-nav {
+      font-size: 13px;
+      max-width: 200px;
+    }
+  }
+  /* Very small screens: hide to avoid overlap */
+  @media (max-width: 768px) {
+    #toc-nav {
+      display: none;
+    }
+  }
+  /* Large screens: cap the size */
+  @media (min-width: 1920px) {
+    #toc-nav {
+      font-size: 21px;
+      max-width: 280px;
+    }
+  }
+  #toc-nav .toc-section {
+    margin-bottom: 0.4em;
+    opacity: 0.55;
+    transition: opacity 0.3s;
+  }
+  #toc-nav .toc-section.active {
+    opacity: 1;
+    font-weight: 700;
+    color: rgba(108, 147, 158, 1);
+  }
+  #toc-nav .toc-subsection {
+    margin-left: 1em;
+    font-size: 0.9em;
+    opacity: 0.45;
+    transition: opacity 0.3s;
+  }
+  #toc-nav .toc-subsection.active {
+    opacity: 1;
+    font-weight: 600;
+    color: rgba(108, 147, 158, 0.95);
   }
   /* Adjust for dark/colored backgrounds */
-  .reveal.has-dark-background .slide-number,
-  .reveal section[data-background-color] .slide-number {
+  .reveal.has-dark-background ~ #toc-nav,
+  body.dark-slide #toc-nav {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .reveal.has-dark-background ~ #toc-nav .toc-section.active,
+  body.dark-slide #toc-nav .toc-section.active {
+    color: rgba(255, 255, 255, 1);
+  }
+  .reveal.has-dark-background ~ #toc-nav .toc-subsection.active,
+  body.dark-slide #toc-nav .toc-subsection.active {
     color: rgba(255, 255, 255, 0.9);
-    background-color: rgba(0, 0, 0, 0);
   }
   </style>
   <style>
@@ -120,6 +178,23 @@
 </style>
 </head>
 <body>
+  <!-- Table of Contents Navigation -->
+  <div id="toc-nav">
+    <div class="toc-section" data-section="background">
+      Background
+      <div class="toc-subsection" data-subsection="brunn-minkowski">The Brunn-Minkowski inequality</div>
+      <div class="toc-subsection" data-subsection="lagrangians">Lagrangians</div>
+      <div class="toc-subsection" data-subsection="optimal-transport">Optimal transport</div>
+      <div class="toc-subsection" data-subsection="ricci">Ricci curvature</div>
+    </div>
+    <div class="toc-section" data-section="results">
+      Results
+      <div class="toc-subsection" data-subsection="displacement">Displacement Convexity</div>
+      <div class="toc-subsection" data-subsection="brunn-minkowski-results">Brunn-Minkowski</div>
+      <div class="toc-subsection" data-subsection="needle">Needle decomposition</div>
+    </div>
+  </div>
+
   <div class="reveal"><div class="slides">
   <section id="title" data-background-color="#7FAEBA">
     <h2>Curvature-Dimension for Autonomous Lagrangians</h2>
@@ -155,11 +230,11 @@
     </div>
   </section>
 
-  <section data-background-color="#7FAEBA">
+  <section data-background-color="#7FAEBA" data-toc-section="background">
     <h2>Background</h2>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="brunn-minkowski">
     <h3 style="color: #6c939e" data-id="bmeq">The Brunn-Minkowski inequality</h3>
     <div style="text-align: left; font-size: .9em;">
       <p>\(A,B \subseteq \mathbb{R}^n\) &nbsp;, \(0 \le \lambda \le 1\) &nbsp.</p>
@@ -180,7 +255,7 @@
     </svg>  
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="brunn-minkowski">
     <h3 style="color: #6c939e" data-id="bmeq">The Brunn-Minkowski inequality</h3>
     <div style="text-align: left; font-size: .9em;">
       <p><b class="accent-warm">Theorem</b> (Brunn-Minkowski) :</p> For every \(A,B \subseteq \mathbb{R}^n\) &nbsp; Borel, nonempty and every \(0 \le \lambda \le 1\) &nbsp;,
@@ -202,7 +277,7 @@
   </section>
 
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top -->
@@ -230,7 +305,7 @@
 </section>
 
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top -->
@@ -257,7 +332,7 @@
   </div>
 </section>
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <div data-id="top" style="position:absolute;left:15%;top:17.5%;width:70%;height:25%; opacity:.05">
@@ -287,7 +362,7 @@
 </section>
 
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top (kept for matching, hidden) -->
@@ -329,7 +404,7 @@
 
 
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top (kept for matching, hidden) -->
@@ -358,7 +433,7 @@
     </div>
 </section>
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top (kept for matching, hidden) -->
@@ -390,7 +465,7 @@
     </div>
 </section>
 
-<section data-auto-animate data-auto-animate-id="bm">
+<section data-auto-animate data-auto-animate-id="bm" data-toc-section="background" data-toc-subsection="brunn-minkowski">
   <div style="position:relative;width:100%;aspect-ratio:600/400;margin:0 auto;font-family:'Alegreya Sans',system-ui,sans-serif">
 
     <!-- Top (kept for matching, hidden) -->
@@ -422,11 +497,11 @@
   </div>
 </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h3 style="color: #6c939e;" data-id="lagtitle">Lagrangians</h3>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h3 style="color: #6c939e;" data-id="lagtitle">Lagrangians</h3>
     <div style="text-align: left;">
     <p>
@@ -441,7 +516,7 @@
   </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h3 style="color: #6c939e;" data-id="lagtitle">Lagrangians</h3>
     <div style="text-align: left;">
     <p>Examples:</p>
@@ -460,7 +535,7 @@
   </section>
 
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The mechanical Lagrangian</h4>
     <div style="text-align: left; font-size: .8em;">
     \[L(x,v) = \frac{|v|^2}{2} - V(x).\]
@@ -471,11 +546,11 @@
     <span>\[(\mathrm{E-L}) \qquad \nabla_{\dot\gamma}\dot\gamma = -\nabla V.\]</span></p>
   </section>
 
-    <section data-background-iframe="electric.html" data-background-interactive data-auto-animate>
+    <section data-background-iframe="electric.html" data-background-interactive data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The mechanical Lagrangian</h4>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The many-body Lagrangian</h4>
     <div style="text-align: left; font-size: .8em;">
       \[M : = \left\{x = (x_1,\dots,x_k) \in (\mathbb{R}^d)^k \,\, \mid \,\, x_i \ne x_j \, \, \forall \, i\ne j\right\}.  \]
@@ -487,11 +562,11 @@
     </div>
   </section>
 
-  <section data-background-iframe="nbody.html" data-background-interactive data-auto-animate>
+  <section data-background-iframe="nbody.html" data-background-interactive data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The many-body Lagrangian</h4>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The magnetic Lagrangian</h4>
     <div style="text-align: left; font-size: .8em;">
     \[L(x,v) = \frac{|v|^2}{2} + A(x,v),\]
@@ -499,14 +574,14 @@
     \[ L = g/2 + \eta\]
     where \(g\) is a Riemannian metric and \(\eta\) is a one-form. </span>
     <p class = "fragment">
-    \[(\mathrm{E-L}) \qquad \nabla_{\dot\gamma}\dot\gamma = \mathrm{Y}v, \quad \text{where } \left\langle\mathrm{Y}\,\cdot\,, \,\cdot \, \right\rangle=d\eta.\]</p>
+    \[(\mathrm{E-L}) \qquad \nabla_{\dot\gamma}\dot\gamma = \mathrm{Y}\dot\gamma, \quad \text{where } \left\langle\mathrm{Y}\,\cdot\,, \,\cdot \, \right\rangle=d\eta.\]</p>
   </section>
 
-  <section data-background-iframe="magnetic.html" data-background-interactive data-auto-animate>
+  <section data-background-iframe="magnetic.html" data-background-interactive data-auto-animate data-toc-section="background" data-toc-subsection="lagrangians">
     <h4 data-id="mechtitle"><b>Example</b>: The magnetic Lagrangian</h4>
   </section>
 
-<section>
+<section data-toc-section="background" data-toc-subsection="lagrangians">
     <div style="text-align: left; font-size: .9em;">
       <p>The <b class="key-term"> Hamiltonian </b> is the <i>Fenchel conjugate</i> of the Lagrangian:
       \[H(p) : = \sup_{v \in T_xM}p(v) - L(v), \quad p\in T^*_xM,\,\,x \in M.\]</p>
@@ -520,7 +595,7 @@
     
   </section>
 
-  <section>
+  <section data-toc-section="background"  data-toc-subsection="lagrangians">
     <div style="text-align: left; font-size: .9em;">
     <p>Given a smooth function \(u\) and a measure \(\mu\) with a smooth density on \(M\), we set
     \[\nabla u : = \mathcal{L}du \qquad \text{ and } \qquad \mathbf{L} u : = \mathrm{div}_\mu(\nabla u)\]
@@ -532,11 +607,11 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
     <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
   </section>
-  
-  <section data-auto-animate>
+
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
     <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
     <div style="text-align: left">
       <p>
@@ -554,10 +629,10 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
   <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
   <div style="text-align: left ; font-size: .9em;">
-    Given a Lagrangian \(L\) on a manifold \(M\), we can set \(\mathcal X _0 = \mathcal X_1 = M\) and define a cost function
+    Given a Lagrangian \(L\) and a pair of probability measure \(\mu_0,\mu_1\) on \(M\), we can set \(\mathcal X _0 = \mathcal X_1 = M\) and define a cost function
     \[\mathrm{c}(x_0,x_1) : = \inf_\gamma \mathrm{A}(\gamma), \qquad x_0,x_1 \in M,\]
     where the infimum is over all curves \(\gamma\) joining \(x_0\) to \(x_1\), and \(\mathrm{A}\) is the action \(A(\gamma) = \int L(\dot\gamma)\). 
     <br>
@@ -585,7 +660,7 @@
   </div>
 </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
   <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
     <div style="text-align: left">
       <p><b class="accent-warm">Theorem</b> <span class="citation">(........, Bernard-Buffoni '05, Fathi-Figalli '07)</span>: 
@@ -615,7 +690,7 @@
 
 
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
   <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
     <div style="text-align: left; font-size: .8em">
       <p> In fact, there exists a family \(\{T_\lambda\}_{0 \le \lambda \le 1}\) &nbsp of maps such that:</p>
@@ -631,7 +706,7 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="optimal-transport">
   <h3 style="color: #6c939e;" data-id="ottitle">Optimal Transport</h3>
     <div style="text-align: left; font-size: .8em;">
       <p style = "font-size: .8em;"> <i>Displacement interpolation can also be described as follows</i>: </p>
@@ -667,11 +742,11 @@
     </div>
   </section> -->
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: #6c939e;" data-id="rictitle">Ricci curvature</h3>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: #6c939e;" data-id="rictitle">Ricci curvature</h3>
     <div style="text-align: left; font-size: .8em;">
     <!-- <p style="color: rgb(83, 129, 141); font-size: 1.1em"><b>Ricci curvature of Riemannian manifolds</b></p> -->
@@ -709,11 +784,11 @@
   </section> -->
 
   
- <section data-auto-animate>
+ <section data-auto-animate data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: rgb(83, 129, 141); font-size: 1em" data-id="ricot">Ricci curvature and optimal transport</h3>
  </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: rgb(83, 129, 141); font-size: 1em" data-id="ricot">Ricci curvature and optimal transport</h3>
     <div style="text-align: left; font-size: .9em;">
     <p><span class="citation" style="font-size:.8em">McCann '97, Cordero-Eruasquin-McCann-Schmuckenschläger '01, von Renesse-Sturm '05, Lott-Villani '07:</span> \((M,g)\) complete Riemannian manifold.</p> 
@@ -731,12 +806,12 @@
     <p style="color: #6f97a1; font-size: .9em"> 🔮 In nonnegative Ricci curvature, the interpolating measures in the displacement interpolation (with squared distance cost) are more "spread out" than the measures at the endpoints. </p>
   </section> -->
 
-  <section data-auto-animate data-background-image="SphMsum2_color_cropped.png"  data-background-size="800pt" data-background-position="bottom" data-background-opacity=".2">
+  <section data-auto-animate data-background-image="SphMsum2_color_cropped.png"  data-background-size="800pt" data-background-position="bottom" data-background-opacity=".2" data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: rgb(83, 129, 141); font-size: 1em" data-id="ricot">Ricci curvature and optimal transport</h3>
     <b>Application of optimal transport to prove geometric inequalities:</b> Brunn-Minkowski / Prékopa–Leindler / Borell-Brascamp-Lieb, functional inequalities, volume growth estimates, topological implications, heat semigroup estimates...
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="background" data-toc-subsection="ricci">
     <h3 style="color: rgb(83, 129, 141); font-size: 1em" data-id="ricot">Ricci curvature and optimal transport</h3>
     <div style="text-align: left; font-size: .9em;">
       <p>\(L^1\) localization (needle decomposition):</p>
@@ -750,11 +825,11 @@
   </section>
 
 
-  <section data-background-color="#7FAEBA">
+  <section data-background-color="#7FAEBA" data-toc-section="results">
     <h2>Results</h2>
   </section>
 
-  <section>
+  <section data-toc-section="results" data-toc-subsection="displacement">
   <h3 style="color: #6c939e; font-size: 1.1em">data</h3>
   <div style="text-align: left; font-size: .9em;">
     <ul>
@@ -778,7 +853,7 @@
   </div>
   </section>
 
-  <section>
+  <section data-toc-section="results" data-toc-subsection="displacement">
     <h3 style="color: #6c939e; font-size: 1em; text-align: left;">Weighted Ricci curvature for Lagrangians</h3>
     <div style="text-align: left; font-size: .9em;">
       <p>Given the above data, we may construct:</p>
@@ -790,7 +865,7 @@
     </div>
   </section>
 
-<section data-auto-animate>
+<section data-auto-animate data-toc-section="results" data-toc-subsection="displacement">
     <h3 style="color: #6c939e; font-size: .85em" data-id="mainresulttitle">Main result: Displacement Convexity for Lagrangians</h3>
     <div style="text-align: left; font-size: .75em;">
       <p><b class="accent-warm">Theorem </b>(A. '25): Let \(N \in [n,\infty]\)&nbsp;. The following are equivalent:</p>
@@ -828,7 +903,7 @@
       </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="displacement">
     <h3 style="color: #6c939e; font-size: .85em" data-id:"mainresulttitle">Main result: Displacement Convexity for Lagrangians</h3>
     <div style="text-align: left; font-size: .85em;">
       <ul>
@@ -850,7 +925,7 @@
     </div>
   </section>  
 
-  <section data-auto-animate="">
+  <section data-auto-animate="" data-toc-section="results" data-toc-subsection="displacement">
     <h4 style="color: #6c939e; font-size: 1em;" data-id="resultsextitle">The mechanical Lagrangian</h4>
     <div style = "text-align: left; font-size: .7em;">
       \[L = g/2 - U\]
@@ -862,7 +937,7 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="displacement">
     <h4 style="color: #6c939e; font-size: 1em;" data-id="resultsextitle">The magnetic Lagrangian</h4>
     <div style = "text-align: left; font-size: .8em;">
       \[L = g/2 + 1/2 - \eta\]
@@ -870,11 +945,14 @@
           \[\mathrm{Ric}_{L,\mathrm{Vol}_g,N} = \mathrm{Ric}_g - \mathrm{div}_g\mathrm{Y} + \frac14|\mathrm{Y}|_g^2  + \frac12 \, g\circ \mathrm{Y} \qquad \text{ on } \qquad E^{-1}(0),\]
       where the <b>magnetic field</b> \(\mathrm{Y}\) is defined by
       \[\left\langle\mathrm{Y}v,w\right\rangle = d\eta(v,w), \qquad v,w \in T_xM, \, \, x \in M.\]
+      If \((M,g,\omega)\) is a Kähler manifold of complex dim. \(d\) and \(d\eta = c\cdot \omega\) then 
+        \[\mathrm{Ric}_{L,\mathrm{Vol}_g,n} = \mathrm{Ric}_g + c^2\cdot \frac{d+1}{2}.\]
+
     </div>
   </section>
 
 
-  <section>
+  <section data-toc-section="results" data-toc-subsection="brunn-minkowski-results">
     <h3 style="color: #6c939e; font-size: .9em">The Brunn-Minkowski inequality for Lagrangians</h3>
     <div style="text-align: left; font-size: .8em;">
       <p><b class="accent-warm">Theorem </b>(A. '25):
@@ -894,7 +972,7 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="brunn-minkowski-results">
     <h2 style="color: #6c939e; font-size: .9em" data-id="horotitle">Example: horocyclic Brunn-Minkowski inequality</h2>
       <div style="text-align: left; font-size: .7em;">
       <p>Let \(\mathbb{C}\mathbf{H}^d\)&nbsp; denote the <b>complex hyperbolic space</b> of complex dimension \(d\). 
@@ -925,7 +1003,7 @@
 
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="brunn-minkowski-results">
     <h2 style="color: #6c939e; font-size: .9em" data-id:"horotitle">Example: horocyclic Brunn-Minkowski inequality</h2>
     <div style="text-align: left; font-size: .7em;">
       <p>
@@ -939,7 +1017,7 @@
       <img src="horosum_text.png" width = 700>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="brunn-minkowski-results">
     <h2 style="color: #6c939e; font-size: .8em;" data-id="contacttitle">Example: Brunn-Minkowski for contact magnetic geodesics</h2>
     <div style="text-align: left; font-size: .8em;">
     <p>
@@ -955,7 +1033,7 @@
     </div>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="brunn-minkowski-results">
   <h2 style="color: #6c939e; font-size: .8em;" data-id="contacttitle">Example: Brunn-Minkowski for contact magnetic geodesics</h2>
     <div style="text-align: left; font-size: .8em;">
       <p><b class="accent-warm">Theorem</b> (A. '25):
@@ -965,11 +1043,11 @@
       </p>
   </section>
 
-  <section data-auto-animate>
+  <section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
     <h2 style="color: #6c939e; font-size: .9em">Key technical result: needle decomposition</h2>
     <div style="text-align: left;font-size: .6em">
-    <p><b class="accent-warm">Theorem</b> (A. '25):
-    Let \(N \in (-\infty,\infty]\setminus[0,n)\) &nbsp; and \(K \in \mathbb{R}\) &nbsp; and suppose that \(\mathrm{Ric}_{L,\mu,N} \ge K\). <br>Let \(f : M \to \mathbb{R}\) &nbsp be a \(\mu\)-intergrable function satisfying
+    <p><b class="accent-warm">Theorem</b> (A. '25, cf. Klartag '14'):
+    Let \(N \in (-\infty,\infty]\setminus[0,n)\) &nbsp; and \(K \in \mathbb{R}\) &nbsp; and suppose that \(\mathrm{Ric}_{L,\mu,N} \ge K\). Let \(f : M \to \mathbb{R}\) &nbsp be a \(\mu\)-intergrable function satisfying
      \[\int_Mfd\mu = 0, \qquad \qquad  {\exists x_0\in M \quad \int_M\left(|\mathrm{c}(x_0,\cdot)| + |\mathrm{c}(\cdot,x_0)|\right)fd\mu < \infty.}\]    
     \(\implies \, \exists\) Borel measures \(\{\mu_\alpha\}_{\alpha \in \mathscr{A}}\) &nbsp; and a measure \(\nu\) on \(\mathscr{A}\) such that:
     </p>
@@ -988,7 +1066,30 @@
   </div>
   </section>
 
-<section data-auto-animate>
+<section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
+    <h2 style="color: #6c939e; font-size: .9em">Future Research</h2>
+    <ul>
+      <li>
+        Lorentzian Lagrangians (e.g. electromagnetic) - w.i.p
+      </li>
+      <li>
+        Time dependent Lagrangians - w.i.p
+      </li>
+      <li>
+        Splitting, Laplacian comparison...
+      </li>
+      <li>
+        More applications for concrete Lagrangians?
+      </li>
+    </ul>
+</section>
+
+  <!-- <section data-background-iframe="flowfinal.html" data-background-interactive> -->
+  <section data-background-color="#7FAEBA">
+    <h2 style="font-size: 2.5em; font-weight: 1000;">Thank you!</h2>
+  </section>
+
+<section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
     <h2 style="color: #6c939e; font-size: .9em" data-id="sketchtitle">Sketch of proof</h2>
     <div style="text-align: left; font-size: .6em;">
         <p>
@@ -1022,7 +1123,7 @@
     </div>
 </section>
 
-<section data-auto-animate>
+<section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
     <h2 style="color: #6c939e; font-size: .9em" data-id="sketchtitle">Sketch of proof</h2>
     <div style="text-align: left; font-size: .6em;">
         <p>
@@ -1055,7 +1156,7 @@
     </div>
 </section>
 
-<section data-auto-animate>
+<section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
     <h2 style="color: #6c939e; font-size: .9em" data-id="sketchtitle">Sketch of proof</h2>
     <div style="text-align: left; font-size: .6em;">
         <p>
@@ -1088,7 +1189,7 @@
     </div>
 </section>
 
-<section data-auto-animate>
+<section data-auto-animate data-toc-section="results" data-toc-subsection="needle">
     <h2 style="color: #6c939e; font-size: .9em" data-id="sketchtitle">Sketch of proof</h2>
     <div style="text-align: left; font-size: .6em;">
         <p>
@@ -1123,29 +1224,7 @@
     </div>
 </section>
 
-<section data-auto-animate>
-    <h2 style="color: #6c939e; font-size: .9em">Future Research</h2>
-    <ul>
-      <li>
-        Lorentzian Lagrangians (e.g. electromagnetic) - w.i.p
-      </li>
-      <li>
-        Time dependent Lagrangians - w.i.p
-      </li>
-      <li>
-        Splitting, Laplacian comparison...
-      </li>
-      <li>
-        More applications for concrete Lagrangians?
-      </li>
-    </ul>
-</section>
-
-  <section data-background-iframe="flowfinal.html" data-background-interactive>
-    <h2 style="font-size: 2.5em; font-weight: 1000;">Thank you!</h2>
-  </section>
-
-  <section>
+  <section data-toc-section="results" data-toc-subsection="needle">
     <div style="text-align: left; font-size: .7em;">
         <p>
             <b class="accent-warm">Theorem</b> (A. '25):
@@ -1195,13 +1274,65 @@
 
     // Progress indicators
     progress: true,                // Show progress bar at bottom
-    slideNumber: 'c/t',           // Show slide numbers as "current/total"
-    showSlideNumber: 'all',       // Show slide numbers on all slides
+    slideNumber: false,            // Hide default slide numbers (we use TOC instead)
+    showSlideNumber: 'all',        // Show slide numbers on all slides
 
     // Controls
     controls: true,                // Show navigation controls
     controlsLayout: 'bottom-right' // Position of controls
   });
+
+  // Update TOC based on current slide
+  function updateTOC() {
+    const currentSlide = Reveal.getCurrentSlide();
+    const section = currentSlide.getAttribute('data-toc-section');
+    const subsection = currentSlide.getAttribute('data-toc-subsection');
+    const tocNav = document.getElementById('toc-nav');
+
+    // Hide TOC on title slide, intro slide, and section header slides (slides with section but no subsection)
+    const isTitle = currentSlide.id === 'title';
+    const isSectionHeader = section && !subsection;
+    const indices = Reveal.getIndices();
+    const isIntro = indices.h === 1; // "In this talk" slide
+
+    if (isTitle || isIntro || isSectionHeader) {
+      tocNav.classList.add('hidden');
+    } else {
+      tocNav.classList.remove('hidden');
+    }
+
+    // Remove all active classes
+    document.querySelectorAll('#toc-nav .toc-section, #toc-nav .toc-subsection').forEach(el => {
+      el.classList.remove('active');
+    });
+
+    // Add active class to current section/subsection
+    if (section) {
+      const sectionEl = document.querySelector(`#toc-nav .toc-section[data-section="${section}"]`);
+      if (sectionEl) {
+        sectionEl.classList.add('active');
+      }
+    }
+
+    if (subsection) {
+      const subsectionEl = document.querySelector(`#toc-nav .toc-subsection[data-subsection="${subsection}"]`);
+      if (subsectionEl) {
+        subsectionEl.classList.add('active');
+      }
+    }
+
+    // Update TOC colors based on background
+    const bgColor = currentSlide.getAttribute('data-background-color');
+    if (bgColor === '#7FAEBA' || currentSlide.classList.contains('has-dark-background')) {
+      document.body.classList.add('dark-slide');
+    } else {
+      document.body.classList.remove('dark-slide');
+    }
+  }
+
+  // Listen for slide changes
+  Reveal.on('slidechanged', updateTOC);
+  Reveal.on('ready', updateTOC);
   </script>
 </body>
 </html>
